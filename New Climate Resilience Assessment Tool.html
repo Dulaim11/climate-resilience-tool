@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Climate Resilience Assessment Tool</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+            color: #334155;
+        }
+        /* Custom styles for input ranges if needed, generally Tailwind handles well */
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            background: #d1d5db;
+            outline: none;
+            opacity: 0.7;
+            transition: opacity .2s;
+            border-radius: 9999px; /* rounded corners for the track */
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #2563eb;
+            cursor: pointer;
+            border-radius: 9999px; /* rounded thumb */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #2563eb;
+            cursor: pointer;
+            border-radius: 9999px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            @apply text-xl font-semibold text-blue-800 mb-4 pb-2 border-b-2 border-blue-200;
+        }
+
+        .input-group label {
+            @apply block text-sm font-medium text-gray-700 mb-1;
+        }
+
+        .input-group select, .input-group input[type="number"] {
+            @apply mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm;
+        }
+
+        .radio-group label {
+            @apply inline-flex items-center;
+        }
+
+        .radio-group input[type="radio"] {
+            @apply form-radio h-4 w-4 text-blue-600 border-gray-300 rounded-full;
+        }
+
+        /* Color classes for result section */
+        .result-high {
+            @apply bg-green-100 border-green-300 text-green-900;
+        }
+        .result-medium {
+            @apply bg-yellow-100 border-yellow-300 text-yellow-900;
+        }
+        .result-low {
+            @apply bg-red-100 border-red-300 text-red-900;
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+    <header class="text-center mb-8 bg-white p-6 sm:p-8 rounded-xl shadow-lg">
+        <!-- University Logo -->
+        <img src="https://cx.kfupm.edu.sa/static/images/kfupm-logo-text-green-en.svg" alt="KFUPM Logo" class="mx-auto h-20 mb-4">
+        
+        <!-- Tool Name -->
+        <h1 class="text-3xl sm:text-4xl font-bold text-blue-700 mb-2">
+            Climate Resilience Assessment Tool
+        </h1>
+        
+        <!-- Your Name and ID -->
+        <p class="text-lg text-gray-700 mb-1">
+            By: Dulaim Abdullah Alrabea - ID: 202407300
+        </p>
+        
+        <!-- Master's Project and Thesis Title -->
+        <p class="text-md text-gray-600">
+            Master's Project - EM-619 Sustainability and Environmental Management<br>
+            <span class="font-bold">An Adaptive Framework for Assessing Climate Resilience in Buildings</span>
+        </p>
+        
+        <p class="text-center text-gray-600 mt-4">
+            Input characteristics of your building project to calculate its Climate Resilience Score.
+        </p>
+    </header>
+
+    <div class="max-w-4xl mx-auto bg-white p-6 sm:p-8 rounded-xl shadow-lg mt-8">
+        
+        <form id="resilienceForm" class="space-y-6">
+
+            <!-- Section 1: Project Context -->
+            <div class="bg-blue-50 p-6 rounded-lg shadow-sm">
+                <h2 class="section-title">1. Project Context</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div class="input-group">
+                        <label for="climateZone">Climate Zone:</label>
+                        <select id="climateZone" class="p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
+                            <option value="Hot-Arid">Hot-Arid</option>
+                            <option value="Coastal">Coastal</option>
+                            <option value="Highland/Cooler Inland">Highland/Cooler Inland</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="awarenessFrameworks">Awareness of Resilience Frameworks:</label>
+                        <select id="awarenessFrameworks" class="p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
+                            <option value="Not Aware">Not Aware</option>
+                            <option value="Somewhat Aware">Somewhat Aware</option>
+                            <option value="Aware">Aware</option>
+                            <option value="Very Aware">Very Aware</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2: Adoption of Resilience Measures -->
+            <div class="bg-blue-50 p-6 rounded-lg shadow-sm">
+                <h2 class="section-title">2. Key Resilience Measures Adopted (How often do you use these?)</h2>
+                <div class="space-y-4">
+                    <div class="input-group">
+                        <label for="energyEfficiency">Energy Efficiency Improvements:</label>
+                        <div class="flex flex-wrap gap-x-4 gap-y-2 radio-group mt-1">
+                            <label><input type="radio" name="energyEfficiency" value="0" class="mr-1" checked> Never</label>
+                            <label><input type="radio" name="energyEfficiency" value="1" class="mr-1"> Rarely</label>
+                            <label><input type="radio" name="energyEfficiency" value="2" class="mr-1"> Sometimes</label>
+                            <label><input type="radio" name="energyEfficiency" value="3" class="mr-1"> Frequently</label>
+                            <label><input type="radio" name="energyEfficiency" value="4" class="mr-1"> Always</label>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="waterConservation">Water Conservation Technologies:</label>
+                        <div class="flex flex-wrap gap-x-4 gap-y-2 radio-group mt-1">
+                            <label><input type="radio" name="waterConservation" value="0" class="mr-1" checked> Never</label>
+                            <label><input type="radio" name="waterConservation" value="1" class="mr-1"> Rarely</label>
+                            <label><input type="radio" name="waterConservation" value="2" class="mr-1"> Sometimes</label>
+                            <label><input type="radio" name="waterConservation" value="3" class="mr-1"> Frequently</label>
+                            <label><input type="radio" name="waterConservation" value="4" class="mr-1"> Always</label>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="passiveCooling">Passive Cooling Design:</label>
+                        <div class="flex flex-wrap gap-x-4 gap-y-2 radio-group mt-1">
+                            <label><input type="radio" name="passiveCooling" value="0" class="mr-1" checked> Never</label>
+                            <label><input type="radio" name="passiveCooling" value="1" class="mr-1"> Rarely</label>
+                            <label><input type="radio" name="passiveCooling" value="2" class="mr-1"> Sometimes</label>
+                            <label><input type="radio" name="passiveCooling" value="3" class="mr-1"> Frequently</label>
+                            <label><input type="radio" name="passiveCooling" value="4" class="mr-1"> Always</label>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="renewableEnergy">Renewable Energy Integration:</label>
+                        <div class="flex flex-wrap gap-x-4 gap-y-2 radio-group mt-1">
+                            <label><input type="radio" name="renewableEnergy" value="0" class="mr-1" checked> Never</label>
+                            <label><input type="radio" name="renewableEnergy" value="1" class="mr-1"> Rarely</label>
+                            <label><input type="radio" name="renewableEnergy" value="2" class="mr-1"> Sometimes</label>
+                            <label><input type="radio" name="renewableEnergy" value="3" class="mr-1"> Frequently</label>
+                            <label><input type="radio" name="renewableEnergy" value="4" class="mr-1"> Always</label>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="climateOptimizedMaterials">Climate-Optimized Construction Materials:</label>
+                        <div class="flex flex-wrap gap-x-4 gap-y-2 radio-group mt-1">
+                            <label><input type="radio" name="climateOptimizedMaterials" value="0" class="mr-1" checked> Never</label>
+                            <label><input type="radio" name="climateOptimizedMaterials" value="1" class="mr-1"> Rarely</label>
+                            <label><input type="radio" name="climateOptimizedMaterials" value="2" class="mr-1"> Sometimes</label>
+                            <label><input type="radio" name="climateOptimizedMaterials" value="3" class="mr-1"> Frequently</label>
+                            <label><input type="radio" name="climateOptimizedMaterials" value="4" class="mr-1"> Always</label>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="dataDrivenAssessments">Data-Driven Climate Risk Assessments:</label>
+                        <div class="flex flex-wrap gap-x-4 gap-y-2 radio-group mt-1">
+                            <label><input type="radio" name="dataDrivenAssessments" value="0" class="mr-1" checked> Never</label>
+                            <label><input type="radio" name="dataDrivenAssessments" value="1" class="mr-1"> Rarely</label>
+                            <label><input type="radio" name="dataDrivenAssessments" value="2" class="mr-1"> Sometimes</label>
+                            <label><input type="radio" name="dataDrivenAssessments" value="3" class="mr-1"> Frequently</label>
+                            <label><input type="radio" name="dataDrivenAssessments" value="4" class="mr-1"> Always</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 5: Gaps in Policies/Regulatory Standards -->
+            <div class="bg-blue-50 p-6 rounded-lg shadow-sm">
+                <h2 class="section-title">3. Gaps in Policies & Standards</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div class="input-group">
+                        <label for="gapsPolicies">Resilience Policy Gaps:</label>
+                        <select id="gapsPolicies" class="p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
+                            <option value="Significant">Significant</option>
+                            <option value="Moderate">Moderate</option>
+                            <option value="Minimal">Minimal</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="gapsRegulatory">Regulatory Standard Gaps:</label>
+                        <select id="gapsRegulatory" class="p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
+                            <option value="Significant">Significant</option>
+                            <option value="Moderate">Moderate</option>
+                            <option value="Minimal">Minimal</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 6: Stakeholder Willingness to Invest -->
+            <div class="bg-blue-50 p-6 rounded-lg shadow-sm">
+                <h2 class="section-title">4. Stakeholder Willingness to Invest/Integrate (1-4, 4=Very Willing)</h2>
+                <div class="space-y-4">
+                    <div class="input-group">
+                        <label for="willingnessOwners">Building Owners/Developers:</label>
+                        <input type="range" id="willingnessOwners" name="willingnessOwners" min="1" max="4" value="2" class="w-full">
+                        <span class="text-xs text-gray-500 flex justify-between"><span>1</span><span>2</span><span>3</span><span>4</span></span>
+                    </div>
+                    <div class="input-group">
+                        <label for="willingnessGovernment">Governmental Support/Funding:</label>
+                        <input type="range" id="willingnessGovernment" name="willingnessGovernment" min="1" max="4" value="2" class="w-full">
+                        <span class="text-xs text-gray-500 flex justify-between"><span>1</span><span>2</span><span>3</span><span>4</span></span>
+                    </div>
+                    <div class="input-group">
+                        <label for="willingnessArchitects">Architects & Engineers' Commitment:</label>
+                        <input type="range" id="willingnessArchitects" name="willingnessArchitects" min="1" max="4" value="2" class="w-full">
+                        <span class="text-xs text-gray-500 flex justify-between"><span>1</span><span>2</span><span>3</span><span>4</span></span>
+                    </div>
+                    <div class="input-group">
+                        <label for="willingnessCommunity">Community Engagement/Support:</label>
+                        <input type="range" id="willingnessCommunity" name="willingnessCommunity" min="1" max="4" value="2" class="w-full">
+                        <span class="text-xs text-gray-500 flex justify-between"><span>1</span><span>2</span><span>3</span><span>4</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" onclick="calculateResilienceScore()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105">
+                Calculate Resilience Score
+            </button>
+        </form>
+
+        <div id="resultSection" class="mt-8 p-6 rounded-lg text-center">
+            <h2 class="text-2xl font-bold mb-4">Your Calculated Climate Resilience Score:</h2>
+            <p id="resilienceScoreOutput" class="text-5xl font-extrabold mb-4"></p>
+            <p id="resilienceLevel" class="text-lg font-semibold"></p>
+            <p class="text-base">
+                (Score ranges from 0 to 5, where 5 indicates very high resilience.)
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Mappings as defined in the Python script
+        const climate_risk_mapping = {'Hot-Arid': 5, 'Coastal': 3, 'Highland/Cooler Inland': 3};
+        const awareness_mapping = {'Not Aware': 1, 'Somewhat Aware': 3, 'Aware': 4, 'Very Aware': 5};
+        const adoption_mapping = {'Never': 0, 'Rarely': 1, 'Sometimes': 2, 'Frequently': 3, 'Always': 4};
+        const gaps_mapping = {'Significant': 1, 'Moderate': 3, 'Minimal': 5};
+        const willingness_mapping = {'Not Willing': 1, 'Somewhat Willing': 2, 'Willing': 3, 'Very Willing': 4};
+
+        function normalizeTo0_5(value, min_val, max_val) {
+            // Ensure value does not exceed max_val or fall below min_val before normalization
+            // This clip is crucial to prevent scores outside the 0-5 range if raw calculation yields extremes
+            value = Math.max(min_val, Math.min(max_val, value));
+            
+            if ((max_val - min_val) === 0) return 0;
+            return ((value - min_val) / (max_val - min_val)) * 5;
+        }
+
+        // Updated theoretical MIN and MAX raw resilience scores for the simplified tool inputs
+        const MIN_RAW_RESILIENCE_SCORE = -0.6;
+        const MAX_RAW_RESILIENCE_SCORE = 6.4;
+
+
+        function calculateResilienceScore() {
+            // --- Get Input Values ---
+            const climateZone = document.getElementById('climateZone').value;
+            const awarenessFrameworks = document.getElementById('awarenessFrameworks').value;
+
+            const adoptionMeasures = [
+                parseInt(document.querySelector('input[name="energyEfficiency"]:checked').value),
+                parseInt(document.querySelector('input[name="waterConservation"]:checked').value),
+                parseInt(document.querySelector('input[name="passiveCooling"]:checked').value),
+                parseInt(document.querySelector('input[name="renewableEnergy"]:checked').value),
+                parseInt(document.querySelector('input[name="climateOptimizedMaterials"]:checked').value),
+                parseInt(document.querySelector('input[name="dataDrivenAssessments"]:checked').value)
+            ];
+
+            const gapsPolicies = document.getElementById('gapsPolicies').value;
+            const gapsRegulatory = document.getElementById('gapsRegulatory').value;
+
+            const willingnessMeasures = [
+                parseInt(document.getElementById('willingnessOwners').value),
+                parseInt(document.getElementById('willingnessGovernment').value),
+                parseInt(document.getElementById('willingnessArchitects').value),
+                parseInt(document.getElementById('willingnessCommunity').value)
+            ];
+
+            // --- Perform Calculations ---
+            const climateRisksScore = climate_risk_mapping[climateZone];
+            const awarenessFrameworksScore = awareness_mapping[awarenessFrameworks];
+
+            const adaptationFrequencyAvg = adoptionMeasures.reduce((sum, val) => sum + val, 0) / adoptionMeasures.length;
+            const adaptationFrequencyAvgNormalized = normalizeTo0_5(adaptationFrequencyAvg, 0, 4);
+
+            const adaptiveMeasuresInUseRaw = adoptionMeasures.reduce((sum, val) => sum + val, 0);
+            const adaptiveMeasuresInUseScore = normalizeTo0_5(adaptiveMeasuresInUseRaw, 0, 24); 
+
+            const smartTechUseScore = adoptionMeasures[5];
+            const smartTechUseScoreNormalized = normalizeTo0_5(smartTechUseScore, 0, 4);
+
+            const buildingCodeAwarenessScore = (gaps_mapping[gapsPolicies] + gaps_mapping[gapsRegulatory]) / 2;
+
+            const stakeholderWillingnessAvg = willingnessMeasures.reduce((sum, val) => sum + val, 0) / willingnessMeasures.length;
+            const stakeholderWillingnessScoreNormalized = normalizeTo0_5(stakeholderWillingnessAvg, 1, 4);
+
+            const rawResilienceScore = (
+                (-0.2 * climateRisksScore) +
+                (0.2 * awarenessFrameworksScore) +
+                (0.3 * adaptationFrequencyAvgNormalized) +
+                (0.2 * adaptiveMeasuresInUseScore) +
+                (0.3 * smartTechUseScoreNormalized) +
+                (0.2 * buildingCodeAwarenessScore) +
+                (0.2 * stakeholderWillingnessScoreNormalized)
+            );
+
+            const finalResilienceScore = normalizeTo0_5(rawResilienceScore, MIN_RAW_RESILIENCE_SCORE, MAX_RAW_RESILIENCE_SCORE);
+
+            // --- Display Result ---
+            const resultSection = document.getElementById('resultSection');
+            const resilienceScoreOutput = document.getElementById('resilienceScoreOutput');
+            const resilienceLevel = document.getElementById('resilienceLevel');
+
+            resilienceScoreOutput.innerText = finalResilienceScore.toFixed(2);
+
+            // Remove existing color classes
+            resultSection.classList.remove('result-low', 'result-medium', 'result-high');
+            resilienceScoreOutput.classList.remove('text-red-900', 'text-yellow-900', 'text-green-900');
+            resilienceLevel.classList.remove('text-red-900', 'text-yellow-900', 'text-green-900');
+
+
+            let levelText = '';
+            if (finalResilienceScore <= 2.0) {
+                resultSection.classList.add('result-low');
+                resilienceScoreOutput.classList.add('text-red-900');
+                resilienceLevel.classList.add('text-red-900');
+                levelText = 'Low Resilience';
+            } else if (finalResilienceScore <= 3.5) {
+                resultSection.classList.add('result-medium');
+                resilienceScoreOutput.classList.add('text-yellow-900');
+                resilienceLevel.classList.add('text-yellow-900');
+                levelText = 'Medium Resilience';
+            } else {
+                resultSection.classList.add('result-high');
+                resilienceScoreOutput.classList.add('text-green-900');
+                resilienceLevel.classList.add('text-green-900');
+                levelText = 'High Resilience';
+            }
+            resilienceLevel.innerText = levelText;
+
+            // Ensure the result section is visible
+            resultSection.classList.remove('hidden');
+
+            // Scroll to result
+            resultSection.scrollIntoView({ behavior: 'smooth' });
+        }
+        // Initial state: hide the result section or initialize with a default value
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('resultSection').classList.add('hidden');
+        });
+    </script>
+</body>
+</html>
